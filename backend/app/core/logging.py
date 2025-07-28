@@ -16,3 +16,8 @@ def setup_logging():
         format="%(asctime)s [%(levelname)s] %(name)s - %(message)s",
         handlers=[logging.StreamHandler(sys.stdout)],
     )
+
+    # Control SQLAlchemy logging to avoid duplicates
+    sa_logger = logging.getLogger("sqlalchemy.engine")
+    sa_logger.setLevel(logging.INFO)  # Or WARNING to reduce noise
+    sa_logger.propagate = False  # Avoid duplication if root also logs

@@ -18,15 +18,13 @@ from app.core.database import init_db
 from app.core.exception_handlers import register_exception_handlers
 from app.core.logging import setup_logging
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # ✅ Called on application startup
     await init_db()
-
-    yield  # ⬅️ Runs the app
-
-    # ⬅️ You can add shutdown logic here if needed in future
+    
+    # ⬅️ Runs the app
+    yield  
 
 
 def create_app() -> FastAPI:
@@ -46,11 +44,15 @@ def create_app() -> FastAPI:
         return {"message": f"Server is running at {ip} and healthy"}
 
     # ✅ Modular routers
-    # from app.modules.auth.api import router as auth_router
+    from app.modules.auth.api import router as auth_router
+    from app.modules.user.api import router as user_router
     # from app.modules.patient.api import router as patient_router
 
-    # app.include_router(auth_router, prefix="/auth", tags=["auth"])
+    app.include_router(auth_router, prefix="/auth", tags=["auth"])
+    app.include_router(user_router)
     # app.include_router(patient_router, prefix="/patients", tags=["patients"])
+
+    app.include_router(user_router)
 
     return app
 

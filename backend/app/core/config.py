@@ -7,7 +7,6 @@ This makes settings reusable and testable.
 """
 
 from functools import lru_cache
-
 from pydantic_settings import BaseSettings
 
 
@@ -15,6 +14,10 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Modular Backend"
     DATABASE_URL: str | None = None  # Postgres DB connection string
     SECRET_KEY: str | None = None  # Used for JWT token signing
+    ALGORITHM: str | None = None
+    ACCESS_TOKEN_EXPIRE_MINUTES: int | None = None
+    PYTHON_VERSION: str = "3.11.2"
+
 
     class Config:
         env_file = ".env"  # Tells Pydantic to load from .env file

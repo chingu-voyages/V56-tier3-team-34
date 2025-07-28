@@ -41,8 +41,6 @@ project_name(backend)/
 │   │   ├── role_checker.py
 │   │   ├── exceptions.py          # Define reusable exceptions ; Reuse across modules
 │   │   └── utils/
-│   │       ├── hashing.py
-│   │       └── jwt.py
 │   ├── modules/                 # Feature modules
 │   │   ├── __init__.py
 │   │   ├── auth/
@@ -165,13 +163,14 @@ uv pip install fastapi uvicorn[standard] sqlmodel asyncpg python-dotenv
 uv pip install ruff black mypy pre-commit pytest pytest-asyncio httpx
 ```
 
-## 6. Setup pre-commit hooks
+## 6. Setup pre-commit hooks [note: avoid this step might create conflict and run test by pre-commit run command]
 ```bash
 pre-commit install
 ```
 
 ## 7. Copy .env file and set your config
 ```bash
+
 cp .env.example .env       # if provided
 ```
 ### Or manually create `.env`
