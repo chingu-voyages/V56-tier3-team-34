@@ -1,3 +1,4 @@
+# app/core/exception_handlers.py
 import logging
 
 from fastapi import Request

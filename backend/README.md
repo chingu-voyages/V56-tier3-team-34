@@ -41,8 +41,6 @@ project_name(backend)/
 │   │   ├── role_checker.py
 │   │   ├── exceptions.py          # Define reusable exceptions ; Reuse across modules
 │   │   └── utils/
-│   │       ├── hashing.py
-│   │       └── jwt.py
 │   ├── modules/                 # Feature modules
 │   │   ├── __init__.py
 │   │   ├── auth/
@@ -140,14 +138,11 @@ source .venv/bin/activate  # Linux/macOS
 uv pip install fastapi uvicorn[standard] sqlmodel asyncpg python-dotenv
 uv pip install ruff black mypy pre-commit pytest pytest-asyncio httpx
 
-## 4. Setup pre-commit hooks
-pre-commit install
-
-## 5. Copy .env file and set your config
+## 4. Copy .env file and set your config
 cp .env.example .env       # if provided
 ### Or manually create `.env`
 
-## 6. Run the dev server
+## 5. Run the dev server
 uvicorn app.main:app --reload
 
 
