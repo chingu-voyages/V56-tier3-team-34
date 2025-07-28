@@ -1,18 +1,25 @@
+from typing import Annotated
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from app.core.security import decode_access_token
-from app.core.database import get_session
-from app.modules.user.service import get_user_by_id
-from app.modules.user.schemas import UserRead, RoleEnum
 from sqlmodel.ext.asyncio.session import AsyncSession
+
+from app.core.database import get_session
+from app.core.security import decode_access_token
+from app.modules.user.schemas import RoleEnum, UserRead
+from app.modules.user.service import get_user_by_id
 
 # FastAPI utility that: Extracts a token from the Authorization header, Verifies that it’s a Bearer token, Returns the token string
 # tokenUrl="/auth/login": hint for the OpenAPI docs (Swagger UI)
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")  
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
-async def get_current_user(token: str = Depends(oauth2_scheme), session: AsyncSession = Depends(get_session)) -> UserRead:
+
+async def get_current_user(
+    token: Annotated[str, Depends(oauth2_scheme)],
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> UserRead:
     payload = decode_access_token(token)
-    id: str = payload.get("sub")
+    id = payload.get("sub")
     if id is None:
         raise HTTPException(status_code=401, detail="Invalid token payload")
 
@@ -22,10 +29,13 @@ async def get_current_user(token: str = Depends(oauth2_scheme), session: AsyncSe
 
     return UserRead.model_validate(user)
 
-def require_admin_user(current_user: UserRead = Depends(get_current_user)) -> UserRead:
+
+def require_admin_user(
+    current_user: Annotated[UserRead, Depends(get_current_user)],
+) -> UserRead:
     if current_user.role != RoleEnum.admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Insufficient permissions: Admins only."
+            detail="Insufficient permissions: Admins only.",
         )
     return current_user

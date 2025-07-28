@@ -1,10 +1,13 @@
-from pydantic import BaseModel, EmailStr
-from uuid import UUID
 import enum
+from uuid import UUID
+
+from pydantic import BaseModel, EmailStr
+
 
 class RoleEnum(str, enum.Enum):
     admin = "admin"
     surgical_team = "surgical_team"
+
 
 class UserRead(BaseModel):
     id: UUID
