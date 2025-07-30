@@ -1,3 +1,5 @@
+# app/shared/role_checker.py
+
 from typing import Annotated
 
 from fastapi import Depends, HTTPException, status
