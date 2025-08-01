@@ -50,6 +50,14 @@ project_name(backend)/
 │   │   │   ├── schemas.py
 │   │   │   ├── dependencies.py
 │   │   │   └── helpers.py
+│   │   ├── user/
+│   │   │   ├── __init__.py
+│   │   │   ├── api.py
+│   │   │   ├── service.py
+│   │   │   ├── schemas.py
+│   │   │   ├── models.py
+│   │   │   ├── dependencies.py
+│   │   │   └── helpers.py
 │   │   ├── patient/
 │   │   │   ├── __init__.py
 │   │   │   ├── api.py
