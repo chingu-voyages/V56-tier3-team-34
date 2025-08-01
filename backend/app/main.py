@@ -12,6 +12,7 @@ import socket
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
 from app.core.database import init_db
@@ -35,6 +36,20 @@ def create_app() -> FastAPI:
     settings = get_settings()
     app = FastAPI(title=settings.PROJECT_NAME, lifespan=lifespan)
 
+    # ✅ ADD CORS MIDDLEWARE
+    origins = [
+        "http://localhost:3000",
+        "http://localhost",
+    ]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
     # ✅ Register all exception handlers
     register_exception_handlers(app)
 
@@ -52,8 +67,6 @@ def create_app() -> FastAPI:
     app.include_router(auth_router, prefix="/auth", tags=["auth"])
     app.include_router(user_router)
     app.include_router(status_router, prefix="/status", tags=["status"])
-
-    app.include_router(user_router)
 
     return app
 
