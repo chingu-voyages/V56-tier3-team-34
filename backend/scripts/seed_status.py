@@ -8,13 +8,48 @@ from app.modules.status.models import Status
 
 async def seed_statuses():
     statuses = [
-        {"status": "Checked In", "message": "In the facility awaiting their procedure.", "color": "#4CAF50", "order_index": 0},
-        {"status": "Pre-Procedure", "message": "Undergoing surgical preparation.", "color": "#4CAF50", "order_index": 1},
-        {"status": "In-progress", "message": "Surgical procedure is underway.", "color": "#4CAF50", "order_index": 2},
-        {"status": "Closing", "message": "Surgery completed. The patient is being prepared for recovery.", "color": "#4CAF50", "order_index": 3},
-        {"status": "Recovery", "message": "Patient transferred to post-surgery recovery room.", "color": "#4CAF50", "order_index": 4},
-        {"status": "Complete", "message": "Recovery completed. Patient awaiting dismissal", "color": "#4CAF50", "order_index": 5},
-        {"status": "Dismissal", "message": "Transferred to a hospital room for an overnight stay or for outpatient procedures, the patient has left the hospital.", "color": "#4CAF50", "order_index": 6},
+        {
+            "status": "Checked In",
+            "message": "In the facility awaiting their procedure.",
+            "color": "#4CAF50",
+            "order_index": 0,
+        },
+        {
+            "status": "Pre-Procedure",
+            "message": "Undergoing surgical preparation.",
+            "color": "#4CAF50",
+            "order_index": 1,
+        },
+        {
+            "status": "In-progress",
+            "message": "Surgical procedure is underway.",
+            "color": "#4CAF50",
+            "order_index": 2,
+        },
+        {
+            "status": "Closing",
+            "message": "Surgery completed. The patient is being prepared for recovery.",
+            "color": "#4CAF50",
+            "order_index": 3,
+        },
+        {
+            "status": "Recovery",
+            "message": "Patient transferred to post-surgery recovery room.",
+            "color": "#4CAF50",
+            "order_index": 4,
+        },
+        {
+            "status": "Complete",
+            "message": "Recovery completed. Patient awaiting dismissal",
+            "color": "#4CAF50",
+            "order_index": 5,
+        },
+        {
+            "status": "Dismissal",
+            "message": "Transferred to a hospital room for an overnight stay or for outpatient procedures, the patient has left the hospital.",
+            "color": "#4CAF50",
+            "order_index": 6,
+        },
     ]
 
     async with SessionLocal() as session:

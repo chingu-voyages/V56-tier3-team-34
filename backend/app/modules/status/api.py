@@ -9,9 +9,9 @@ from app.modules.status.service import get_all_statuses
 
 router = APIRouter()
 
+
 @router.get("/", response_model=list[StatusRead])
 async def read_statuses(session: Annotated[AsyncSession, Depends(get_session)]):
-  all_status = await get_all_statuses(session)
-  print(all_status)
-  return [StatusRead.model_validate(status) for status in all_status]
- 
+    all_status = await get_all_statuses(session)
+    print(all_status)
+    return [StatusRead.model_validate(status) for status in all_status]
