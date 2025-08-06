@@ -2,9 +2,10 @@ import os
 import asyncio
 import json
 import google.generativeai as genai
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from dotenv import load_dotenv
 from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 
 # Load environment variables from a .env file
 load_dotenv(override=True)
@@ -22,7 +23,10 @@ genai.configure(api_key=GEMINI_API_KEY)
 # --- FastAPI Router ---
 router = APIRouter(prefix="/chat", tags=["Chat Inference"])
 
-async def sse_chat_generator():
+class ChatRequest(BaseModel):
+    message: str
+
+async def sse_chat_generator(re_prompt: str = "What is the meaning of life?"):
     """
     This async generator yields Server-Sent Events (SSE) with status updates
     for the chat inference process.
@@ -35,10 +39,8 @@ async def sse_chat_generator():
         yield f"data: {json.dumps(waiting_message)}\n\n"
 
         # --- Model Initialization & Content Generation ---
-        # NOTE: If a real application would have issues, this part could be made non-blocking
-        # if the API call is slow
         model = genai.GenerativeModel('gemini-1.5-pro-latest')
-        prompt = "What is the meaning of life? Explain it like you are a cheerful philosopher."
+        prompt = f"{re_prompt} Explain it like you are a cheerful philosopher."
         response = await model.generate_content_async(prompt)
 
         # --- Event 2: Successful Response ---
@@ -53,12 +55,15 @@ async def sse_chat_generator():
         # Format the data for SSE
         yield f"data: {json.dumps(error_message)}\n\n"
 
-@router.get("/")
-async def chat_inference_stream():
+@router.post("/")
+async def chat_inference_stream(request: ChatRequest):
     """
-    This endpoint uses the Gemini API to generate a response to a fixed prompt,
+    This endpoint uses the Gemini API to generate a response to the user's prompt,
     streaming status updates to the client using Server-Sent Events (SSE).
+    
+    Expects a JSON payload with a "message" field containing the user's prompt.
     """
-    # media_type is "text/event-stream" for SSE
-    return StreamingResponse(sse_chat_generator(), media_type="text/event-stream")
-
+    return StreamingResponse(
+        sse_chat_generator(request.message),
+        media_type="text/event-stream"
+    )
