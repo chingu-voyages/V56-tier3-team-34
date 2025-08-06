@@ -1,14 +1,12 @@
 'use client';
 
-// import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
   User,
   LogIn,
-  LogOut,
-  //   Users,
-  //   Plus,
+  LogOut, 
   Activity,
   Monitor,
   Home,
@@ -22,37 +20,17 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
 export default function Navbar() {
-  //   const { user, logout } = useAuth();
-  const user = {
-    name: 'John Doe',
-    role: 'guest', // Example role, replace with actual user data
-  };
+  const { user, logout, isAuthenticated } = useAuth();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Define navigation items with roles and icons
   const navItems = [
-    {
-      href: '/',
-      icon: Home,
-      label: 'Home',
-      roles: ['guest', 'admin', 'surgical_team'],
-    },
-    {
-      href: '/status-board',
-      icon: Monitor,
-      label: 'Status Board',
-      roles: ['guest', 'admin', 'surgical_team'],
-    },
-    {
-      href: '/chat',
-      icon: MessageSquare,
-      label: 'Chat',
-      roles: ['guest', 'admin', 'surgical_team'],
-    },
+    { href: '/', icon: Home, label: 'Home', roles: ['guest', 'admin', 'surgical_team'] },
+    { href: '/status-board', icon: Monitor, label: 'Status Board', roles: ['guest', 'admin', 'surgical_team'] },
+    { href: '/dashboard', icon: Activity, label: 'Dashboard', roles: ['admin', 'surgical_team'] },
 
     // TODO: To be added later
-    // { href: '/dashboard', icon: Activity, label: 'Dashboard', roles: ['admin', 'surgical_team'] },
     // { href: '/patients', icon: Users, label: 'Patients', roles: ['admin', 'surgical_team'] },
     // { href: '/patients/add', icon: Plus, label: 'Add Patient', roles: ['admin'] },
   ];
@@ -133,7 +111,7 @@ export default function Navbar() {
 
             {/* Auth Actions */}
             <div className="flex items-center space-x-2">
-              {user?.role === 'guest' ? (
+              {!isAuthenticated ? (
                 <Link href="/login">
                   <Button size="sm" className="hidden sm:flex">
                     <LogIn className="h-4 w-4 mr-2" />
@@ -144,7 +122,7 @@ export default function Navbar() {
                 <Button
                   variant="outline"
                   size="sm"
-                //   onClick={logout}
+                  onClick={logout}
                   className="hidden sm:flex text-gray-600 hover:text-gray-900"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
@@ -211,7 +189,7 @@ export default function Navbar() {
 
               {/* Mobile Auth Action */}
               <div className="pt-3 border-t border-gray-100">
-                {user?.role === 'guest' ? (
+                {!isAuthenticated ? (
                   <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
                     <Button size="sm" className="w-full">
                       <LogIn className="h-4 w-4 mr-2" />
