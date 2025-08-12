@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str | None = None  # Postgres DB connection string
     SECRET_KEY: str | None = None  # Used for JWT token signing
     ALGORITHM: str | None = None
+    GEMINI_API_KEY: str | None = None  # OpenRouter API key
     ACCESS_TOKEN_EXPIRE_MINUTES: float = 600
     PYTHON_VERSION: str = "3.11.2"
 

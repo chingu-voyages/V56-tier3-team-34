@@ -3,15 +3,16 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  User, 
+import {
+  User,
   LogIn,
   LogOut, 
   Activity,
   Monitor,
   Home,
   Menu,
-  X
+  X,
+  MessageSquare,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -23,7 +24,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    // Define navigation items with roles and icons
+  // Define navigation items with roles and icons
   const navItems = [
     { href: '/', icon: Home, label: 'Home', roles: ['guest', 'admin', 'surgical_team'] },
     { href: '/status-board', icon: Monitor, label: 'Status Board', roles: ['guest', 'admin', 'surgical_team'] },
@@ -32,7 +33,6 @@ export default function Navbar() {
     // TODO: To be added later
     // { href: '/patients', icon: Users, label: 'Patients', roles: ['admin', 'surgical_team'] },
     // { href: '/patients/add', icon: Plus, label: 'Add Patient', roles: ['admin'] },
-
   ];
 
   const availableItems = navItems.filter(item => 
