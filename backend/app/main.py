@@ -66,7 +66,6 @@ def create_app() -> FastAPI:
     from app.modules.user.api import router as user_router
     from app.modules.chat_inference.api import router as chat_router
     app.include_router(auth_router, prefix="/auth", tags=["auth"])
-    app.include_router(user_router)
     app.include_router(status_router, prefix="/status", tags=["status"])
 
     app.include_router(user_router)
