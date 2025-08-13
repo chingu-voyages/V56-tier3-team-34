@@ -62,10 +62,11 @@ def create_app() -> FastAPI:
 
     # ✅ Modular routers
     from app.modules.auth.api import router as auth_router
+    from app.modules.chat_inference.api import router as chat_router
     from app.modules.patient.api import router as patient_router
     from app.modules.status.api import router as status_router
     from app.modules.user.api import router as user_router
-    from app.modules.chat_inference.api import router as chat_router
+
     app.include_router(auth_router, prefix="/auth", tags=["auth"])
     app.include_router(status_router, prefix="/status", tags=["status"])
     app.include_router(patient_router, prefix="/patients", tags=["patients"])
