@@ -3,7 +3,6 @@ import os
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from typing import Optional
 
 from app.modules.chat_inference.service import sse_chat_generator
 
@@ -13,8 +12,9 @@ router = APIRouter(prefix="/chat", tags=["Chat Inference"])
 
 class ChatRequest(BaseModel):
     message: str = "How can I get help?"  # Default message
-    temperature: Optional[float] = 0.7  # Default temperature
-    role: Optional[str] = "user helpdesk assistant"  # Default role
+    temperature: float = 0.7  # Default temperature
+    role: str = "user helpdesk assistant"  # Default role
+
 
 # Load context from file
 def load_context():
@@ -23,9 +23,10 @@ def load_context():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     context_path = os.path.join(current_dir, "data", "instructions.txt")
     if os.path.exists(context_path):
-        with open(context_path, "r") as file:
+        with open(context_path) as file:
             context = file.read().strip()
     return context
+
 
 @router.get("/")
 def get_chat_context():
@@ -40,22 +41,22 @@ def get_chat_context():
 async def chat_inference_stream(request: ChatRequest):
     """
     Streams chat responses from Gemini API with configurable parameters.
-    
+
     Parameters:
     - message: User's input prompt (required. default: "How can I get help?")
     - temperature: Controls randomness (0.0-1.0, default 0.7)
     - role: The persona the AI should adopt (default: "user helpdesk assistant")
-    
+
     Context is automatically loaded from data/context.txt
     """
     context = load_context()
-    
+
     return StreamingResponse(
         sse_chat_generator(
             re_prompt=request.message,
             context=context,
             temperature=request.temperature,
-            role=request.role
+            role=request.role,
         ),
-        media_type="text/event-stream"
+        media_type="text/event-stream",
     )
