@@ -1,8 +1,12 @@
+from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 from .schemas import RoleEnum
+
+if TYPE_CHECKING:
+    from app.modules.patient.models import Patient
 
 
 class User(SQLModel, table=True):  # type: ignore
@@ -11,3 +15,5 @@ class User(SQLModel, table=True):  # type: ignore
     email: str = Field(unique=True, index=True)
     hashed_password: str
     role: RoleEnum
+
+    patients: list["Patient"] = Relationship(back_populates="surgeon")

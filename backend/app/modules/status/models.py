@@ -1,4 +1,9 @@
-from sqlmodel import Field, SQLModel
+from typing import TYPE_CHECKING
+
+from sqlmodel import Field, Relationship, SQLModel
+
+if TYPE_CHECKING:
+    from app.modules.patient.models import Patient
 
 
 class Status(SQLModel, table=True):  # type: ignore
@@ -6,3 +11,5 @@ class Status(SQLModel, table=True):  # type: ignore
     message: str
     color: str
     order_index: int
+
+    patients: list["Patient"] = Relationship(back_populates="status_obj")
