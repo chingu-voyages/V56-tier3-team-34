@@ -6,7 +6,7 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <div className="font-sans bg-gray-100">
+    <div className="font-sans bg-gray-50">
       <main className="p-8 text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
           Real-Time Surgical Tracking for Peace of Mind.
