@@ -1,69 +1,62 @@
 import os
-import asyncio
-import json
-import google.generativeai as genai
-from fastapi import APIRouter, Request
-from dotenv import load_dotenv
+
+from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-# Load environment variables from a .env file
-load_dotenv(override=True)
-
-# --- Gemini API Configuration ---
-# Get your API key from an environment variable.
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-
-if not GEMINI_API_KEY:
-    raise ValueError("Please set the GEMINI_API_KEY environment variable. You can get a key from https://aistudio.google.com/")
-
-# Configure the generative AI library with the API key
-genai.configure(api_key=GEMINI_API_KEY)
+from app.modules.chat_inference.service import sse_chat_generator
 
 # --- FastAPI Router ---
 router = APIRouter(prefix="/chat", tags=["Chat Inference"])
 
+
 class ChatRequest(BaseModel):
-    message: str
+    message: str = "How can I get help?"  # Default message
+    temperature: float = 0.7  # Default temperature
+    role: str = "user helpdesk assistant"  # Default role
 
-async def sse_chat_generator(re_prompt: str = "What is the meaning of life?"):
+
+# Load context from file
+def load_context():
+    context = ""
+    # Construct the absolute path to the instructions.txt file
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    context_path = os.path.join(current_dir, "data", "instructions.txt")
+    if os.path.exists(context_path):
+        with open(context_path) as file:
+            context = file.read().strip()
+    return context
+
+
+@router.get("/")
+def get_chat_context():
     """
-    This async generator yields Server-Sent Events (SSE) with status updates
-    for the chat inference process.
+    Returns the chat context loaded from data/instructions.txt.
     """
-    try:
-        # --- Event 1: Waiting Status ---
-        # Yield a "waiting" status, formatted for SSE
-        waiting_message = {"status": "waiting", "message": "Waiting for Gemini API response..."}
-        # Format the data for SSE: "data: {json_string}\n\n"
-        yield f"data: {json.dumps(waiting_message)}\n\n"
+    context = load_context()
+    return {"context": context}
 
-        # --- Model Initialization & Content Generation ---
-        model = genai.GenerativeModel('gemini-1.5-pro-latest')
-        prompt = f"{re_prompt} Explain it like you are a cheerful philosopher."
-        response = await model.generate_content_async(prompt)
-
-        # --- Event 2: Successful Response ---
-        # Yield the "success" status with the response, formatted for SSE
-        success_message = {"status": "success", "message": response.text}
-        # Format the data for SSE
-        yield f"data: {json.dumps(success_message)}\n\n"
-
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        error_message = {"status": "error", "message": "Failed to generate content from Gemini API."}
-        # Format the data for SSE
-        yield f"data: {json.dumps(error_message)}\n\n"
 
 @router.post("/")
 async def chat_inference_stream(request: ChatRequest):
     """
-    This endpoint uses the Gemini API to generate a response to the user's prompt,
-    streaming status updates to the client using Server-Sent Events (SSE).
-    
-    Expects a JSON payload with a "message" field containing the user's prompt.
+    Streams chat responses from Gemini API with configurable parameters.
+
+    Parameters:
+    - message: User's input prompt (required. default: "How can I get help?")
+    - temperature: Controls randomness (0.0-1.0, default 0.7)
+    - role: The persona the AI should adopt (default: "user helpdesk assistant")
+
+    Context is automatically loaded from data/context.txt
     """
+    context = load_context()
+
     return StreamingResponse(
-        sse_chat_generator(request.message),
-        media_type="text/event-stream"
+        sse_chat_generator(
+            re_prompt=request.message,
+            context=context,
+            temperature=request.temperature,
+            role=request.role,
+        ),
+        media_type="text/event-stream",
     )
