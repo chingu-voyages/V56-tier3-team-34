@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Monitor, Users, Clock, RefreshCw, Activity, CheckCircle, AlertCircle, Pause, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { ClientTimeDisplay } from '@/components/ui/clienttimedisplay';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -150,10 +151,7 @@ export default function StatusBoardPage() {
               <Users className="h-5 w-5 mr-2" />
               <span>{patients.length} Active Patients</span>
             </div>
-            <div className="flex items-center">
-              <Clock className="h-5 w-5 mr-2" />
-              <span>Last Updated: {lastUpdated.toLocaleTimeString()}</span>
-            </div>
+            <ClientTimeDisplay date={lastUpdated} />
           </div>
         </div>
 
@@ -221,45 +219,49 @@ export default function StatusBoardPage() {
                   key={patient.patient_number}
                   className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-all duration-300 min-h-[280px] flex flex-col"
                 >
-                  <CardContent className="p-4 md:p-6 flex-1 flex flex-col justify-between">
-                    <div className="text-center">
-                      {/* Patient Number */}
-                      <div className="text-2xl md:text-3xl font-bold text-white mb-2">
-                        {patient.patient_number}
-                      </div>
+                  <CardContent className="p-4 md:p-6 flex-1 flex flex-col justify-center relative">
+                    <div>
+                      <div className="text-center">
+                        {/* Patient Number */}
+                        <div className="text-2xl md:text-3xl font-bold text-white mb-2">
+                          {patient.patient_number}
+                        </div>
 
-                      {/* Status */}
-                      <div className="flex items-center justify-center mb-3">
-                        <Icon className="h-4 w-4 text-white mr-2" />
-                        <Badge className={config.color}>
-                          {config.label}
-                        </Badge>
-                      </div>
+                        {/* Status */}
+                        <div className="flex items-center justify-center mb-3">
+                          <Icon className="h-4 w-4 text-white mr-2" />
+                          <Badge className={config.color}>
+                            {config.label}
+                          </Badge>
+                        </div>
 
-                      {/* Patient Info (shown for privileged users) */}
-                      {isPrivilegedUser && (
-                        <>
-                          <div className="text-white mb-2">
-                            {patient.first_name} {patient.last_name}
-                          </div>
-                          <div className="text-blue-100 mb-2 text-sm">
-                            {patient.procedure}
-                          </div>
-                        </>
-                      )}
+                        {/* Patient Info (shown for privileged users) */}
+                        {isPrivilegedUser && (
+                          <>
+                            <div className="text-white mb-2">
+                              {patient.first_name} {patient.last_name}
+                            </div>
+                            <div className="text-blue-100 mb-2 text-sm">
+                              {patient.procedure}
+                            </div>
+                          </>
+                        )}
 
-                      {/* Room and Time (always shown) */}
-                      <div className="text-blue-100 text-sm mb-1">
-                        Room: {patient.room_no}
-                      </div>
-                      <div className="text-blue-100 text-sm mb-1">
-                        Time: {formatTime(patient.scheduled_time)}
-                      </div>
+                        {/* Surgeon (always shown) */}
+                        <div className="text-blue-100 text-sm font-bold">
+                          Surgeon: {patient.surgeon_name}
+                        </div>
 
-                      {/* Surgeon (always shown) */}
-                      <div className="text-blue-100 text-sm">
-                        Surgeon: {patient.surgeon_name}
+                        {/* Time (always shown) */}
+                        <div className="text-pink-400 text-sm mb-1">
+                          Time: {formatTime(patient.scheduled_time)}
+                        </div>
                       </div>
+                    </div>
+                    
+                    {/* Room (always shown) */}
+                    <div className="absolute bottom-4 right-4 text-yellow-400 text-lg uppercase font-bold">
+                      ROOM {patient.room_no}
                     </div>
                   </CardContent>
                 </Card>
