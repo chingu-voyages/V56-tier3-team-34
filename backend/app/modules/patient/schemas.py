@@ -15,7 +15,7 @@ class PatientCreate(BaseModel):
     email: str
     procedure: str
     scheduled_time: datetime
-    surgeon_id: UUID | None = Field(None)
+    surgeon_name: str | None = Field(None)
     room_no: str | None = Field(None)
     note: str | None = Field(None)
 
@@ -39,7 +39,7 @@ class PatientRead(BaseModel):
     email: str
     procedure: str
     scheduled_time: datetime
-    surgeon_id: UUID | None
+    surgeon_name: str | None = None
     room_no: str | None
     note: str | None
     status: str
@@ -71,6 +71,10 @@ class PatientSummary(BaseModel):
     first_name: str
     last_name: str
     status: str
-    email: str
+    phone: str
+    room_no: str | None = None
+    procedure: str
+    surgeon_name: str | None = None
+    scheduled_time: datetime
 
     model_config = {"from_attributes": True}

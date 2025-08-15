@@ -13,8 +13,8 @@ from app.modules.patient.schemas import (
     PatientUpdate,
 )
 from app.modules.patient.service import PatientService, get_patient_service
-from app.modules.user.schemas import UserRead
-from app.shared.role_checker import require_admin_user
+from app.modules.user.schemas import RoleEnum, UserRead
+from app.shared.role_checker import require_admin_user, require_roles
 
 router = APIRouter()
 
@@ -46,7 +46,7 @@ async def update_patient_info(
     )
 
 
-@router.get("/{patient_number}", response_model=PatientSummary)
+@router.get("/{patient_number}", response_model=PatientRead)
 async def get_patient_by_number(
     patient_number: str,
     current_user: Annotated[UserRead, Depends(require_admin_user)],
@@ -57,7 +57,9 @@ async def get_patient_by_number(
 
 @router.get("/", response_model=dict)
 async def get_all_patients(
-    current_user: Annotated[UserRead, Depends(require_admin_user)],
+    current_user: Annotated[
+        UserRead, Depends(require_roles([RoleEnum.admin, RoleEnum.surgical_team]))
+    ],
     patient_service: Annotated[PatientService, Depends(get_patient_service)],
     page: int = Query(1, ge=1),
     limit: int = Query(10, ge=1, le=100),
@@ -67,7 +69,9 @@ async def get_all_patients(
 
 @router.get("/search/", response_model=list[PatientRead])
 async def search_patients(
-    current_user: Annotated[UserRead, Depends(require_admin_user)],
+    current_user: Annotated[
+        UserRead, Depends(require_roles([RoleEnum.admin, RoleEnum.surgical_team]))
+    ],
     patient_service: Annotated[PatientService, Depends(get_patient_service)],
     name: str | None = None,
     status: str | None = None,
@@ -85,3 +89,10 @@ async def get_patient_stats(
     patient_service: Annotated[PatientService, Depends(get_patient_service)],
 ):
     return await patient_service.fetch_patient_stats()
+
+
+@router.get("/today-status-board/", response_model=list[PatientSummary])
+async def get_today_patients(
+    patient_service: Annotated[PatientService, Depends(get_patient_service)],
+):
+    return await patient_service.get_today_patients_summary()
