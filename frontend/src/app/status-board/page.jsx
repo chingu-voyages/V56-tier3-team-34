@@ -1,19 +1,17 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { Monitor, Users, Clock, RefreshCw, Activity, CheckCircle, AlertCircle, Pause, XCircle, ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import { Monitor, Users, Clock, RefreshCw, Activity, CheckCircle, AlertCircle, Pause, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
 
-// Status configuration for patient statuses
 const statusConfig = {
   'scheduled': {
     label: 'Scheduled',
     color: 'bg-blue-500 text-white',
-    icon: Calendar,
+    icon: Clock,
   },
   'checked-in': {
     label: 'Checked In',
@@ -23,22 +21,22 @@ const statusConfig = {
   'pre-procedure': {
     label: 'Pre-Procedure',
     color: 'bg-yellow-500 text-white',
-    icon: Clock,
+    icon: Activity,
   },
   'in-progress': {
     label: 'In-Progress',
     color: 'bg-red-500 text-white',
-    icon: Activity,
+    icon: AlertCircle,
   },
   'closing': {
     label: 'Closing',
     color: 'bg-orange-500 text-white',
-    icon: AlertCircle,
+    icon: Pause,
   },
   'recovery': {
     label: 'Recovery',
     color: 'bg-purple-500 text-white',
-    icon: Pause,
+    icon: CheckCircle,
   },
   'complete': {
     label: 'Complete',
@@ -49,6 +47,26 @@ const statusConfig = {
     label: 'Dismissal',
     color: 'bg-gray-500 text-white',
     icon: XCircle,
+  }
+};
+
+const getRoleSpecificContent = (role) => {
+  switch (role) {
+    case 'admin':
+      return {
+        title: 'Admin Surgery Board',
+        description: 'Full access to all patient surgical statuses',
+      };
+    case 'surgical_team':
+      return {
+        title: 'Surgical Team Board',
+        description: 'Monitor your surgical cases and patient statuses',
+      };
+    default:
+      return {
+        title: 'Surgery Status Board',
+        description: 'Real-time surgical progress updates',
+      };
   }
 };
 
@@ -88,15 +106,6 @@ export default function StatusBoardPage() {
     });
   };
 
-  const formatDate = (date) => {
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
   const getStatusConfig = (status) => {
     const statusKey = status.toLowerCase().replace(' ', '-');
     return statusConfig[statusKey] || {
@@ -105,6 +114,9 @@ export default function StatusBoardPage() {
       icon: Activity
     };
   };
+
+  const { title, description } = getRoleSpecificContent(user?.role);
+  const isPrivilegedUser = ['admin', 'surgical_team'].includes(user?.role);
 
   return (
     <div className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 min-h-screen">
@@ -115,16 +127,21 @@ export default function StatusBoardPage() {
             <Monitor className="h-16 w-16 text-white mb-4" />
           </div>
           <h1 className="text-5xl font-bold text-white mb-4">
-            Surgery Status Board
+            {title}
           </h1>
           
           <div className="mb-6">
             <div className="text-2xl font-semibold text-white mb-2">
-              {formatDate(new Date())}
+              {new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
               <Badge className="ml-3 bg-green-500 text-white">Today</Badge>
             </div>
             <p className="text-xl text-blue-100">
-              Real-time surgical progress updates
+              {description}
             </p>
           </div>
           
@@ -153,26 +170,28 @@ export default function StatusBoardPage() {
         </div>
 
         {/* Status Legend */}
-        <div className="flex justify-center mb-12">
-          <Card className="bg-white/10 backdrop-blur-sm border-white/20">
-            <CardContent className="p-6">
-              <h3 className="text-lg font-semibold text-white mb-4 text-center">Status Guide</h3>
-              <div className="flex flex-wrap justify-center gap-4">
-                {Object.entries(statusConfig).map(([status, config]) => {
-                  const Icon = config.icon;
-                  return (
-                    <div key={status} className="flex items-center space-x-2">
-                      <Icon className="h-4 w-4 text-white" />
-                      <Badge className={config.color}>
-                        {config.label}
-                      </Badge>
-                    </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        {isPrivilegedUser && (
+          <div className="flex justify-center mb-12">
+            <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-white mb-4 text-center">Status Guide</h3>
+                <div className="flex flex-wrap justify-center gap-4">
+                  {Object.entries(statusConfig).map(([status, config]) => {
+                    const Icon = config.icon;
+                    return (
+                      <div key={status} className="flex items-center space-x-2">
+                        <Icon className="h-4 w-4 text-white" />
+                        <Badge className={config.color}>
+                          {config.label}
+                        </Badge>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* Patients Grid */}
         {loading ? (
@@ -217,18 +236,16 @@ export default function StatusBoardPage() {
                         </Badge>
                       </div>
 
-                      {/* Patient Info (conditionally shown) */}
-                      {user?.role !== 'guest' && (
-                        <div className="text-white mb-2">
-                          {patient.first_name} {patient.last_name}
-                        </div>
-                      )}
-
-                      {/* Procedure (shown for non-guests) */}
-                      {user?.role !== 'guest' && (
-                        <div className="text-blue-100 mb-2 text-sm">
-                          {patient.procedure}
-                        </div>
+                      {/* Patient Info (shown for privileged users) */}
+                      {isPrivilegedUser && (
+                        <>
+                          <div className="text-white mb-2">
+                            {patient.first_name} {patient.last_name}
+                          </div>
+                          <div className="text-blue-100 mb-2 text-sm">
+                            {patient.procedure}
+                          </div>
+                        </>
                       )}
 
                       {/* Room and Time (always shown) */}
