@@ -7,8 +7,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
-import { getPatients } from '@/lib/patients';
-import { generateDailyPatientNumber } from '@/lib/patients';
 
 // Status configuration for patient statuses
 const statusConfig = {
@@ -62,8 +60,17 @@ const statusConfig = {
   }
 };
 
+// API fetching function
+const getStatuses = async () => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/status`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch statuses');
+  }
+  return response.json();
+};
+
 export default function StatusBoardPage() {
-  const [patients, setPatients] = useState([]);
+  const [statuses, setStatuses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -72,36 +79,26 @@ export default function StatusBoardPage() {
   // Check if user can navigate dates (admin or surgical_team)
   const canNavigateDates = user && user.role !== 'guest';
 
-  const loadPatients = useCallback(async () => {
+  const loadStatuses = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await getPatients();
-      // Filter out dismissed patients for public display
-      let activePatients = data.filter(p => p.status !== 'dismissed');
-      
-      // Filter by selected date
-      const selectedDateStr = selectedDate.toDateString();
-      activePatients = activePatients.filter(patient => {
-        const patientDate = new Date(patient.scheduledTime || patient.createdAt);
-        return patientDate.toDateString() === selectedDateStr;
-      });
-      
-      setPatients(activePatients);
+      const data = await getStatuses();
+      setStatuses(data);
       setLastUpdated(new Date());
     } catch (error) {
-      console.error('Failed to load patients:', error);
+      console.error('Failed to load statuses:', error);
     } finally {
       setLoading(false);
     }
-  }, [selectedDate]);
+  }, []);
 
   useEffect(() => {
-    loadPatients();
+    loadStatuses();
     
     // Auto-refresh every 30 seconds
-    const interval = setInterval(loadPatients, 30000);
+    const interval = setInterval(loadStatuses, 30000);
     return () => clearInterval(interval);
-  }, [loadPatients]);
+  }, [loadStatuses]);
 
   const formatTime = (date) => {
     return date.toLocaleTimeString('en-US', {
@@ -210,7 +207,7 @@ export default function StatusBoardPage() {
           <div className="flex items-center justify-center space-x-6 text-blue-100">
             <div className="flex items-center">
               <Users className="h-5 w-5 mr-2" />
-              <span>{patients.length} {isToday(selectedDate) ? 'Active' : 'Scheduled'} Patients</span>
+              <span>{statuses.length} Active Statuses</span>
             </div>
             <div className="flex items-center">
               <Clock className="h-5 w-5 mr-2" />
@@ -222,7 +219,7 @@ export default function StatusBoardPage() {
         {/* Refresh Button */}
         <div className="flex justify-center mb-8">
           <Button
-            onClick={loadPatients}
+            onClick={loadStatuses}
             disabled={loading}
             className="bg-white/10 hover:bg-white/20 text-white border-white/20"
           >
@@ -253,87 +250,64 @@ export default function StatusBoardPage() {
           </Card>
         </div>
 
-        {/* Patients Grid */}
+        {/* Statuses Grid */}
         {loading ? (
           <div className="flex items-center justify-center py-16">
             <div className="text-center">
               <RefreshCw className="h-12 w-12 animate-spin text-white mx-auto mb-4" />
-              <div className="text-xl text-white">Loading patient data...</div>
+              <div className="text-xl text-white">Loading status data...</div>
             </div>
           </div>
-        ) : patients.length === 0 ? (
+        ) : statuses.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-2xl text-white mb-4">
-              No {isToday(selectedDate) ? 'Active' : 'Scheduled'} Patients
+              No Active Statuses
             </div>
             <div className="text-blue-100">
-              {isToday(selectedDate) 
-                ? 'All surgical procedures have been completed'
-                : `No procedures scheduled for ${formatDate(selectedDate)}`
-              }
+              All surgical procedures have been completed
             </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6 lg:gap-8">
-            {patients.map((patient) => {
-              const status = statusConfig[patient.status];
-              const StatusIcon = status?.icon || Activity;
-              
-              // Generate daily sequential number based on surgery date/time
-              const dailyNumber = generateDailyPatientNumber(patients, patient.scheduledTime);
-              
-              return (
-                <Card
-                  key={patient.id}
-                  className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105 min-h-[280px] flex flex-col"
-                >
-                  <CardContent className="p-4 md:p-6 flex-1 flex flex-col justify-between">
-                    <div className="text-center">
-                      {/* Patient Number */}
-                      <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3">
-                        {dailyNumber}
-                      </div>
-                      
-                      {/* Status */}
-                      <div className="flex items-center justify-center mb-4 lg:mb-6">
-                        <StatusIcon className="h-5 w-5 md:h-6 md:w-6 text-white mr-2" />
-                        <Badge className={`${status?.color || 'bg-gray-500 text-white'} text-xs md:text-sm px-2 md:px-3 py-1`}>
-                          {status?.label || patient.status}
-                        </Badge>
-                      </div>
-                      
-                      {/* Procedure */}
-                      <div className="text-white mb-2 md:mb-3 font-medium text-sm md:text-base lg:text-lg leading-tight">
-                        {patient.procedure}
-                      </div>
-                      
-                      {/* Surgeon */}
-                      <div className="text-blue-100 text-xs md:text-sm mb-3 md:mb-4">
-                        Dr. {patient.surgeon}
-                      </div>
-                      
-                      {/* Timing - Stacked for better desktop layout */}
-                      <div className="space-y-1 md:space-y-2">
-                        {patient.estimatedTime && (
-                          <div className="text-blue-200 text-xs md:text-sm flex items-center justify-center">
-                            <Clock className="h-3 w-3 md:h-4 md:w-4 mr-1" />
-                            Est: {patient.estimatedTime}
-                          </div>
-                        )}
-                        
-                        {patient.actualStartTime && (
-                          <div className="text-green-200 text-xs md:text-sm flex items-center justify-center">
-                            <CheckCircle className="h-3 w-3 md:h-4 md:w-4 mr-1" />
-                            Started: {patient.actualStartTime}
-                          </div>
-                        )}
-                      </div>
+          {statuses.map((status) => {
+            // Convert API status to match our statusConfig keys
+            const statusKey = status.status.toLowerCase().replace(' ', '-').replace('-progress', '-procedure');
+            const config = statusConfig[statusKey] || {
+              color: 'bg-gray-500',
+              label: status.status
+            };
+            
+            const dailyNumber = `P${(status.order_index + 1).toString().padStart(3, '0')}`;
+            
+            return (
+              <Card
+                key={status.order_index}
+                className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105 min-h-[280px] flex flex-col"
+              >
+                <CardContent className="p-4 md:p-6 flex-1 flex flex-col justify-between">
+                  <div className="text-center">
+                    {/* Patient Number */}
+                    <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3">
+                      {dailyNumber}
                     </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+
+                    {/* Status */}
+                    <div className="flex items-center justify-center mb-4 lg:mb-6">
+                      <Badge className={`${config.color} text-xs md:text-sm px-2 md:px-3 py-1`}>
+                        {config.label}
+                      </Badge>
+                    </div>
+                    
+                    {/* Message */}
+                    <div className="text-white mb-2 md:mb-3 font-medium text-sm md:text-base lg:text-lg leading-tight">
+                      {status.message}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
         )}
 
         {/* Enhanced Footer for Desktop */}
