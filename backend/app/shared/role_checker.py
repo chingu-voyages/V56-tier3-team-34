@@ -41,3 +41,22 @@ def require_admin_user(
             detail="Insufficient permissions: Admins only.",
         )
     return current_user
+
+
+def require_roles(allowed_roles: list[RoleEnum]):
+    """
+    Dependency factory that allows access to multiple roles.
+    Usage: Depends(require_roles([RoleEnum.admin, RoleEnum.surgical_team]))
+    """
+
+    def dependency(
+        current_user: Annotated[UserRead, Depends(get_current_user)]
+    ) -> UserRead:
+        if current_user.role not in allowed_roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Insufficient permissions: allowed roles = {', '.join([r.value for r in allowed_roles])}.",
+            )
+        return current_user
+
+    return dependency

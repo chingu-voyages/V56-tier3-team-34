@@ -12,6 +12,7 @@ import {
   Home,
   Menu,
   X,
+  Plus,
   MessageSquare,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -29,10 +30,8 @@ export default function Navbar() {
     { href: '/', icon: Home, label: 'Home', roles: ['guest', 'admin', 'surgical_team'] },
     { href: '/status-board', icon: Monitor, label: 'Status Board', roles: ['guest', 'admin', 'surgical_team'] },
     { href: '/dashboard', icon: Activity, label: 'Dashboard', roles: ['admin', 'surgical_team'] },
-
-    // TODO: To be added later
-    // { href: '/patients', icon: Users, label: 'Patients', roles: ['admin', 'surgical_team'] },
-    // { href: '/patients/add', icon: Plus, label: 'Add Patient', roles: ['admin'] },
+    { href: '/patients', icon: User, label: 'Patients', roles: ['admin', 'surgical_team'] },
+    { href: '/add-patient', icon: Plus, label: 'Add Patient', roles: ['admin'] },
   ];
 
   const availableItems = navItems.filter(item => 
