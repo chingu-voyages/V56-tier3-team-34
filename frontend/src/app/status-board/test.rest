@@ -1,0 +1,30 @@
+# API Tests
+
+@base_url = http://localhost:8000
+
+# Chatbot API Tests
+
+###
+# Chat with Gemini API
+GET {{base_url}}/status/
+Content-Type: application/json
+accept: application/json
+
+
+# Login
+###
+POST {{base_url}}/auth/login/
+Content-Type: application/json
+accept: application/json 
+
+{
+  "email": "admin@hospital.com",
+  "password": "password"
+}
+
+## Get Patient List
+###
+GET {{base_url}}/patients/
+Content-Type: application/json
+accept: application/json
+Authorization: Bearer xxxxxxx
