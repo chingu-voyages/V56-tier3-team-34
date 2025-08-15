@@ -2,11 +2,9 @@
 
 @base_url = http://localhost:8000
 
-# Chatbot API Tests
-
 ###
-# Chat with Gemini API
-GET {{base_url}}/status/
+# Get Statuses
+GET {{base_url}}/patients/today-status-board/
 Content-Type: application/json
 accept: application/json
 
@@ -18,7 +16,7 @@ Content-Type: application/json
 accept: application/json 
 
 {
-  "email": "admin@hospital.com",
+  "email": "surgeon@hospital.com",
   "password": "password"
 }
 
@@ -27,4 +25,4 @@ accept: application/json
 GET {{base_url}}/patients/
 Content-Type: application/json
 accept: application/json
-Authorization: Bearer xxxxxxx
+Authorization: Bearer xxxx
