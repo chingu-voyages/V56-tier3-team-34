@@ -49,7 +49,9 @@ async def update_patient_info(
 @router.get("/{patient_number}", response_model=PatientRead)
 async def get_patient_by_number(
     patient_number: str,
-    current_user: Annotated[UserRead, Depends(require_admin_user)],
+    current_user: Annotated[
+        UserRead, Depends(require_roles([RoleEnum.admin, RoleEnum.surgical_team]))
+    ],
     patient_service: Annotated[PatientService, Depends(get_patient_service)],
 ):
     return await patient_service.retrieve_patient(patient_number)
