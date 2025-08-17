@@ -8,6 +8,16 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 cd V56-tier3-team-34/frontend
 npm install
 ```
+### Env
+Copy the example environment file to create your own local `.env` file:
+
+```bash
+cp .env-example .env
+```
+
+Default value for `NEXT_PUBLIC_API_URL` is `http://127.0.0.1:8000`.
+
+Edit `.env` to add your own environment variables as needed.
 
 ### Running the Development Server:
 
@@ -43,9 +53,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 
-## Resources
+## Live Demo
 
-- NHS Love -  Photo by <a href="https://unsplash.com/@nicolasjleclercq?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Nicolas J Leclercq</a> on <a href="https://unsplash.com/photos/purple-and-pink-heart-shaped-illustration-fbovpZ4GuLg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+The frontend is deployed at: [https://surgence-mu.vercel.app](https://surgence-mu.vercel.app)
 
-- Ambulance - Photo by <a href="https://unsplash.com/@carrier_lost?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Ian Taylor</a> on <a href="https://unsplash.com/photos/yellow-and-white-van-on-road-during-daytime-4hWvAJP8ofM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-- Doctor and Family - Photo by <a href="https://unsplash.com/@cdc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">CDC</a> on <a href="https://unsplash.com/photos/a-group-of-people-standing-in-a-room-OJF3lYjC6vg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>

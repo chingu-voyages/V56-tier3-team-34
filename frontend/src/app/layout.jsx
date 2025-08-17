@@ -10,7 +10,7 @@ export const metadata = {
   title: 'Surgence - Surgery Status Board',
   description: 'Real-time surgical status tracking system for hospitals and clinics.',
   keywords: ['surgery', 'status board', 'real-time', 'tracking', 'hospital', 'clinic', 'surgical status'],
-  authors: [{ name: 'Chingu Tier 3 Team 34' }],
+  authors: [{ name: 'Surgence Team - Chingu Tier 3 Team 34' }],
   openGraph: {
     type: 'website',
     url: 'https://surgence-mu.vercel.app/',
