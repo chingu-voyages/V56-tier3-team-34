@@ -1,5 +1,12 @@
 # Surgence - Patient Management System
 
+![Am I Responsive Mockup](./docs/amiresponsive.png)
+
+[Live Link](https://surgence-mu.vercel.app)
+[Backend](https://surgence.onrender.com/docs)
+
+---
+
 Surgence is a patient management system designed to assist administrators in managing patient records efficiently. The system allows for the creation, retrieval, updating, and searching of patient information, providing a centralized platform for healthcare data management. It also includes robust user authentication to ensure secure access to sensitive patient data.
 
 ## Stack
