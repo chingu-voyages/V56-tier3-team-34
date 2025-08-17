@@ -8,7 +8,15 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Surgence - Surgery Status Board',
-  description: 'Real-time surgical status tracking system',
+  description: 'Real-time surgical status tracking system for hospitals and clinics.',
+  keywords: ['surgery', 'status board', 'real-time', 'tracking', 'hospital', 'clinic', 'surgical status'],
+  authors: [{ name: 'Chingu Tier 3 Team 34' }],
+  openGraph: {
+    type: 'website',
+    url: 'https://surgence-mu.vercel.app/',
+    title: 'Surgence - Surgery Status Board',
+    description: 'Real-time surgical status tracking system for hospitals and clinics.',
+  },
   icons: {
     icon: [
       { url: '/favicon/favicon.ico', type: 'image/x-icon' },
