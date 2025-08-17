@@ -14,8 +14,7 @@ class ChatRequest(BaseModel):
     message: str = "How can I get help?"  # Default message
     temperature: float = 0.7  # Default temperature
     role: str = "user helpdesk assistant"  # AI persona
-    user_role: str = "guest" # User's role
-
+    user_role: str = "guest"  # User's role
 
 
 # Load context from file
