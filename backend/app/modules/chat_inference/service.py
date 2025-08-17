@@ -32,7 +32,7 @@ async def sse_chat_generator(
 
         # Configure model with temperature
         model = genai.GenerativeModel(
-            "gemini-1.5-pro-latest",
+            "gemini-2.0-flash",
             generation_config={
                 "temperature": min(max(temperature, 0.0), 1.0),  # Clamped to 0-1 range
                 "max_output_tokens": 2048,
