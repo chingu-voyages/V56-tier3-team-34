@@ -1,10 +1,12 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import './chat.css';
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
 
 export default function Chat() {
+  const { user } = useAuth();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [status, setStatus] = useState('idle'); // 'idle', 'waiting', 'success', 'error'
@@ -32,7 +34,10 @@ export default function Chat() {
       const response = await fetch(`${backendUrl}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ 
+          message: input,
+          user_role: user?.role || 'guest'
+        }),
       });
 
       if (!response.ok) {
@@ -99,39 +104,47 @@ export default function Chat() {
   };
 
   return (
-    <div className="chat-container">
-      <div className="chat-history">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`message ${msg.sender} ${msg.isError ? 'error' : ''}`}
-          >
-            {msg.text}
-          </div>
-        ))}
-        {status === 'waiting' && (
-          <div className="message bot">
-            <div className="typing-indicator">
-              <div className="pulsating-dot"></div>
-              <div className="pulsating-dot"></div>
-              <div className="pulsating-dot"></div>
+    <div className="page-container">
+      <div className="chat-container">
+        <div className="chat-history">
+          {messages.length === 0 && !isLoading && (
+            <div className="no-messages">
+              <img src="/doc.webp" alt="Doctor" className="doctor-image" />
+              <p>Welcome! Ask me anything about the Surgence app.</p>
             </div>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-      <div className="chat-input">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyUp={(e) => e.key === 'Enter' && handleSend()}
-          placeholder="Type your message..."
-          disabled={isLoading}
-        />
-        <button onClick={handleSend} disabled={isLoading}>
-          {isLoading ? 'Sending...' : 'Send'}
-        </button>
+          )}
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`message ${msg.sender} ${msg.isError ? 'error' : ''}`}
+            >
+              {msg.text}
+            </div>
+          ))}
+          {status === 'waiting' && (
+            <div className="message bot">
+              <div className="typing-indicator">
+                <div className="pulsating-dot"></div>
+                <div className="pulsating-dot"></div>
+                <div className="pulsating-dot"></div>
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+        <div className="chat-input">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyUp={(e) => e.key === 'Enter' && handleSend()}
+            placeholder="Type your message..."
+            disabled={isLoading}
+          />
+          <button onClick={handleSend} disabled={isLoading}>
+            {isLoading ? 'Sending...' : 'Send'}
+          </button>
+        </div>
       </div>
     </div>
   );

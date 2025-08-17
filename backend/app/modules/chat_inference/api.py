@@ -13,7 +13,9 @@ router = APIRouter(prefix="/chat", tags=["Chat Inference"])
 class ChatRequest(BaseModel):
     message: str = "How can I get help?"  # Default message
     temperature: float = 0.7  # Default temperature
-    role: str = "user helpdesk assistant"  # Default role
+    role: str = "user helpdesk assistant"  # AI persona
+    user_role: str = "guest" # User's role
+
 
 
 # Load context from file
@@ -57,6 +59,7 @@ async def chat_inference_stream(request: ChatRequest):
             context=context,
             temperature=request.temperature,
             role=request.role,
+            user_role=request.user_role,
         ),
         media_type="text/event-stream",
     )
