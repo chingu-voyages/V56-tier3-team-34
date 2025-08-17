@@ -132,7 +132,31 @@ File	Purpose
 
 
 # Setup Guide
+# Setup Guide
 ## 1. Clone the repo
+```bash
+git clone https://github.com/chingu-voyages/V56-tier3-team-34.git
+cd V56-tier3-team-34/backend
+```
+
+## 2. Ensure Python 3.11 is installed
+You can check with:
+```bash
+python3.11 --version
+```
+If not installed, install Python 3.11 via your package manager
+
+## 3. Install uv (if not already installed)
+```bash
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"     # Windows
+```
+### or
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh  # Linux/macOS
+```
+
+## 4. Setup virtual environment with uv
+```bash
 ```bash
 git clone https://github.com/chingu-voyages/V56-tier3-team-34.git
 cd V56-tier3-team-34/backend
@@ -159,36 +183,53 @@ curl -LsSf https://astral.sh/uv/install.sh | sh  # Linux/macOS
 uv venv .venv
 .venv\Scripts\activate     # Windows
 ```
+```
 ### or
+```bash
+uv venv .venv
 ```bash
 uv venv .venv
 source .venv/bin/activate  # Linux/macOS
 ```
+```
 
+## 5. Install core + dev dependencies
+```bash
 ## 5. Install core + dev dependencies
 ```bash
 uv pip install fastapi uvicorn[standard] sqlmodel asyncpg python-dotenv
 uv pip install ruff black mypy pre-commit pytest pytest-asyncio httpx
 ```
+```
 
+## 6. Setup pre-commit hooks
+```bash
 ## 6. Setup pre-commit hooks [note: avoid this step might create conflict and run test by pre-commit run command]
 ```bash
 pre-commit install
+```
 ```
 
 ## 7. Copy .env file and set your config
 ```bash
 
+## 7. Copy .env file and set your config
+```bash
 cp .env.example .env       # if provided
+```
 ```
 ### Or manually create `.env`
 
 ## 8. Run the dev server
 ```bash
+## 8. Run the dev server
+```bash
 uvicorn app.main:app --reload
+```
 ```
 
 
+# Tooling Notes
 # Tooling Notes
 uv is used for dependency + virtualenv management (no pip/poetry required)
 
@@ -198,6 +239,7 @@ pre-commit runs linting and type checks on every commit
 
 SQLModel is used as your async ORM with asyncpg
 
+# Pydantic vs SQLModel Roles
 # Pydantic vs SQLModel Roles
 Tool	Purpose	DB Access?
 Pydantic	Request validation, response	❌ No
