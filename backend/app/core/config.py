@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: float = 600
     PYTHON_VERSION: str = "3.11.2"
 
+    FRONTEND_URL: str | None = None
+
     class Config:
         env_file = ".env"  # Tells Pydantic to load from .env file
         env_file_encoding = "utf-8"

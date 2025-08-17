@@ -43,6 +43,9 @@ def create_app() -> FastAPI:
         "http://127.0.0.1:3000",
     ]
 
+    if settings.FRONTEND_URL:
+        origins.append(settings.FRONTEND_URL)
+
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,
