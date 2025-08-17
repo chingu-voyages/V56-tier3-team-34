@@ -41,6 +41,7 @@ def create_app() -> FastAPI:
         "http://localhost:3000",
         "http://localhost",
         "http://127.0.0.1:3000",
+        "https://surgence-mu.vercel.app"
     ]
 
     if settings.FRONTEND_URL:
