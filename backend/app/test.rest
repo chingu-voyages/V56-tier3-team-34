@@ -1,0 +1,35 @@
+# API Tests
+
+@base_url = http://localhost:8000
+
+# Chatbot API Tests
+
+###
+# Chat with Gemini API
+POST {{base_url}}/chat/
+Content-Type: application/json
+accept: application/json
+
+{
+  "message": "How can I get help?",
+  "temperature": 0.7,
+  "role": "user helpdesk assistant"
+}
+
+###
+# Chat with Gemini API - main features of this app?
+POST {{base_url}}/chat/
+Content-Type: application/json
+accept: application/json
+
+{
+  "message": "main features of this app?",
+  "temperature": 0.7,
+  "role": "user helpdesk assistant"
+}
+
+###
+# Get chat context
+GET {{base_url}}/chat/
+Content-Type: application/json
+accept: application/json

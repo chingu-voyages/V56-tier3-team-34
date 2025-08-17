@@ -1,0 +1,61 @@
+Patient Management System - User Instructions
+
+Project Description
+-------------------
+This is a Patient Management System designed to assist administrators in managing patient records efficiently. The system allows for the creation, retrieval, updating, and searching of patient information, providing a centralized platform for healthcare data management. It also includes robust user authentication to ensure secure access to sensitive patient data.
+
+How to Use the Web Application
+------------------------------
+
+1. Accessing the System (Authentication)
+----------------------------------------
+To use the Patient Management System, you must first log in with an administrator account.
+
+Login:
+1. Navigate to the application's login page (typically the main entry point or /auth/login)
+2. Enter your administrator username and password in the provided fields
+3. Click the "Login" or "Sign In" button
+4. Upon successful login, you will be redirected to the Dashboard or a similar main overview page
+
+2. Dashboard Overview
+---------------------
+The Dashboard provides a summary of key information. From here, you can navigate to different sections of the application using the main menu or navigation links.
+
+3. Patient Management
+---------------------
+This section allows you to manage all patient-related data. Only administrators have access to these functionalities.
+
+Adding a New Patient:
+1. From the main navigation, go to the "Patients" or "Add Patient" section
+2. Click on the "Add New Patient" or similar button
+3. Fill in the required patient details in the form (e.g., Name, Date of Birth, Contact Information, etc.)
+4. Click "Save" or "Create Patient" to add the new record to the system
+
+Viewing Patient Details:
+1. Navigate to the "Patients" list
+2. You will see a list of all registered patients
+3. To view detailed information for a specific patient, click on their name or a "View Details" button next to their entry in the list
+
+Updating Patient Information:
+1. From the patient details view (or directly from the patient list, if an "Edit" option is available), click the "Edit" or "Update" button
+2. Modify the necessary fields in the patient's record
+3. Click "Save Changes" or "Update Patient" to apply your modifications
+
+Searching for Patients:
+1. On the "Patients" list page, locate the search bar
+2. You can search for patients by various criteria such as:
+   - Patient Name
+   - Current Status (e.g., Admitted, Discharged, Scheduled)
+   - Scheduled Date (for appointments or procedures)
+   - Surgeon (if applicable)
+3. Enter your search query and press Enter or click the "Search" button. The list will filter to show matching results
+
+Viewing Patient Statistics:
+1. Look for a "Statistics" or "Reports" section, possibly within the "Patients" area or on the Dashboard
+2. Clicking on this will display various aggregated statistics related to patients in the system
+
+4. Other Potential Features (Depending on Implementation)
+--------------------------------------------------------
+- Chat Inference: If integrated, there might be a chat interface for AI-driven interactions or insights related to patient data
+- Status and Status Logs: The system may track and display various statuses for patients or internal processes, with logs available for review
+- Projects/Tasks: There might be sections for managing internal projects or tasks related to patient care or administrative duties
