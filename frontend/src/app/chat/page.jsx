@@ -99,39 +99,41 @@ export default function Chat() {
   };
 
   return (
-    <div className="chat-container">
-      <div className="chat-history">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`message ${msg.sender} ${msg.isError ? 'error' : ''}`}
-          >
-            {msg.text}
-          </div>
-        ))}
-        {status === 'waiting' && (
-          <div className="message bot">
-            <div className="typing-indicator">
-              <div className="pulsating-dot"></div>
-              <div className="pulsating-dot"></div>
-              <div className="pulsating-dot"></div>
+    <div className="page-container">
+      <div className="chat-container">
+        <div className="chat-history">
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`message ${msg.sender} ${msg.isError ? 'error' : ''}`}
+            >
+              {msg.text}
             </div>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-      <div className="chat-input">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyUp={(e) => e.key === 'Enter' && handleSend()}
-          placeholder="Type your message..."
-          disabled={isLoading}
-        />
-        <button onClick={handleSend} disabled={isLoading}>
-          {isLoading ? 'Sending...' : 'Send'}
-        </button>
+          ))}
+          {status === 'waiting' && (
+            <div className="message bot">
+              <div className="typing-indicator">
+                <div className="pulsating-dot"></div>
+                <div className="pulsating-dot"></div>
+                <div className="pulsating-dot"></div>
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+        <div className="chat-input">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyUp={(e) => e.key === 'Enter' && handleSend()}
+            placeholder="Type your message..."
+            disabled={isLoading}
+          />
+          <button onClick={handleSend} disabled={isLoading}>
+            {isLoading ? 'Sending...' : 'Send'}
+          </button>
+        </div>
       </div>
     </div>
   );
