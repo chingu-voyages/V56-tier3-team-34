@@ -151,23 +151,41 @@ class PatientService:
             self.session.add(status_log)
             await self.session.commit()
 
-        return PatientRead.model_validate(patient)
+        final_result = await self.session.exec(
+            select(Patient, User.name.label("surgeon_name"))  # type: ignore
+            .join(User, User.id == Patient.surgeon_id, isouter=True)
+            .where(Patient.patient_number == patient_number)
+        )
+
+        final_patient_data = final_result.first()
+        updated_patient, surgeon_name = final_patient_data
+
+        patient_dict = updated_patient.model_dump()
+        patient_dict["surgeon_name"] = surgeon_name
+
+        return PatientRead.model_validate(patient_dict)
 
     async def retrieve_patient(self, patient_number: str) -> "PatientRead":
         """
         Get a patient by patient_number (Admin only).
         """
         result = await self.session.exec(
-            select(Patient).where(Patient.patient_number == patient_number)
+            select(Patient, User.name.label("surgeon_name"))  # type: ignore
+            .join(User, User.id == Patient.surgeon_id, isouter=True)
+            .where(Patient.patient_number == patient_number)
         )
-        patient = result.first()
+        patient_data = result.first()
 
-        if not patient:
+        if not patient_data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Patient not found"
             )
 
-        return PatientRead.model_validate(patient)
+        patient, surgeon_name = patient_data
+        patient_dict = patient.model_dump()
+        patient_dict["surgeon_name"] = surgeon_name
+
+        return PatientRead.model_validate(patient_dict)
 
     async def retrieve_all_patients(self, page: int = 1, limit: int = 10):
         """
