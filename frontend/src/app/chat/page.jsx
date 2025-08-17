@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import './chat.css';
 
-const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export default function Chat() {
   const { user } = useAuth();
