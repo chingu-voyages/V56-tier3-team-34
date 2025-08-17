@@ -107,6 +107,12 @@ export default function Chat() {
     <div className="page-container">
       <div className="chat-container">
         <div className="chat-history">
+          {messages.length === 0 && !isLoading && (
+            <div className="no-messages">
+              <img src="/doc.webp" alt="Doctor" className="doctor-image" />
+              <p>Welcome! Ask me anything about the Surgence app.</p>
+            </div>
+          )}
           {messages.map((msg, index) => (
             <div
               key={index}
