@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { Monitor, Users, Clock, RefreshCw, Activity, CheckCircle, AlertCircle, Pause, XCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { ClientTimeDisplay } from '@/components/ui/clienttimedisplay';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent } from '@/components/ui/Card';
+import { ClientTimeDisplay } from '@/components/ui/ClientTimeDisplay';
+import { Badge } from '@/components/ui/Badge';
 import { useAuth } from '@/contexts/AuthContext';
 
 const statusConfig = {
