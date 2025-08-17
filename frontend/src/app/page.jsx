@@ -2,8 +2,8 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Monitor, Shield, Users, Activity, Clock, CheckCircle, ArrowRight, Stethoscope, Heart, UserCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
