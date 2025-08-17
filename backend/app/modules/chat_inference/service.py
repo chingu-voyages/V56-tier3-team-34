@@ -14,6 +14,7 @@ async def sse_chat_generator(
     context: str = "",
     temperature: float = 0.7,
     role: str = "user helpdesk assistant",
+    user_role: str = "guest",
 ):
     """
     Async generator for SSE chat responses with Gemini API.
@@ -23,6 +24,7 @@ async def sse_chat_generator(
         context: Additional context for the conversation
         temperature: Controls response randomness (0.0-1.0)
         role: The persona AI should respond as
+        user_role: The role of the user interacting with the AI
     """
     try:
         # Initial waiting status
@@ -43,6 +45,7 @@ async def sse_chat_generator(
                 "role": "user",
                 "parts": [
                     f"Role: Act as a {role}.\n"
+                    f"User Role: You are interacting with a user with the role: {user_role}. Tailor your response to be appropriate for this user role.\n"
                     f"Context: {context}\n\n"
                     f"User Question: {re_prompt}"
                 ],
