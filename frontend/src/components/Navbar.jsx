@@ -13,7 +13,7 @@ import {
   Menu,
   X,
   Plus,
-  MessageSquare,
+  MessageCircle,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -32,6 +32,7 @@ export default function Navbar() {
     { href: '/dashboard', icon: Activity, label: 'Dashboard', roles: ['admin', 'surgical_team'] },
     { href: '/patients', icon: User, label: 'Patients', roles: ['admin', 'surgical_team'] },
     { href: '/add-patient', icon: Plus, label: 'Add Patient', roles: ['admin'] },
+    { href: '/chat', icon: MessageCircle, label: 'Help', roles: ['guest', 'admin', 'surgical_team'] }
   ];
 
   const availableItems = navItems.filter(item => 
