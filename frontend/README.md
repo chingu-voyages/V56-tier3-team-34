@@ -41,3 +41,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+## Resources
+
+- NHS Love -  Photo by <a href="https://unsplash.com/@nicolasjleclercq?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Nicolas J Leclercq</a> on <a href="https://unsplash.com/photos/purple-and-pink-heart-shaped-illustration-fbovpZ4GuLg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+- Ambulance - Photo by <a href="https://unsplash.com/@carrier_lost?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Ian Taylor</a> on <a href="https://unsplash.com/photos/yellow-and-white-van-on-road-during-daytime-4hWvAJP8ofM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+- Doctor and Family - Photo by <a href="https://unsplash.com/@cdc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">CDC</a> on <a href="https://unsplash.com/photos/a-group-of-people-standing-in-a-room-OJF3lYjC6vg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
