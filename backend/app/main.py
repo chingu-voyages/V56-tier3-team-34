@@ -70,6 +70,7 @@ def create_app() -> FastAPI:
     from app.modules.patient.api import router as patient_router
     from app.modules.status.api import router as status_router
     from app.modules.user.api import router as user_router
+    from app.modules.analytics.api import router as analytics_router
 
     app.include_router(auth_router, prefix="/auth", tags=["auth"])
     app.include_router(status_router, prefix="/status", tags=["status"])
@@ -77,6 +78,7 @@ def create_app() -> FastAPI:
 
     app.include_router(user_router)
     app.include_router(chat_router)
+    app.include_router(analytics_router)
 
     return app
 
