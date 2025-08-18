@@ -1,0 +1,33 @@
+# API Tests
+
+@base_url = http://localhost:8000
+
+# Analytics Test
+
+
+###
+# Analytics Overview - all data for today
+GET {{base_url}}/analytics/overview/
+Accept: application/json
+
+###
+# Analytics Overview - for custom date range
+GET {{base_url}}/analytics/overview/?start_date=2025-08-01&end_date=2025-08-17
+Accept: application/json
+
+
+
+###
+# Analytics - Recent Activity (today only)
+GET {{base_url}}/analytics/recent-activity/
+Accept: application/json
+
+
+
+
+###
+# Analytics - Status Breakdown (counts by status)
+GET {{base_url}}/analytics/status-breakdown/
+Accept: application/json
+
+
