@@ -2,60 +2,85 @@ Patient Management System - User Instructions
 
 Project Description
 -------------------
-This is a Patient Management System designed to assist administrators in managing patient records efficiently. The system allows for the creation, retrieval, updating, and searching of patient information, providing a centralized platform for healthcare data management. It also includes robust user authentication to ensure secure access to sensitive patient data.
+This is the Surgence Patient Management System, designed to assist healthcare administrators and staff in efficiently managing patient records and surgical workflows. The system provides a centralized platform for patient information, including creation, retrieval, updating, and searching of patient data. It features robust user authentication with role-based access control to ensure secure access to sensitive patient data, an AI-powered chatbot for data interaction, and real-time patient status tracking.
 
 How to Use the Web Application
 ------------------------------
 
-1. Accessing the System (Authentication)
-----------------------------------------
-To use the Patient Management System, you must first log in with an administrator account.
+1. Accessing the System (Authentication and Roles)
+-------------------------------------------------
+The system supports different user roles, each with specific access levels:
+- **Admin:** Full access to all patient management functionalities, including adding, updating, viewing, and searching patient records, and accessing detailed patient statistics. Admins can also view all patient details on the Status Board.
+- **Surgical Team:** Can view and search patient records, and access detailed patient information on the Status Board relevant to surgical cases.
+- **General Public/Unauthenticated Users:** Can view a limited version of the Status Board, showing only non-sensitive patient information.
 
-Login:
-1. Navigate to the application's login page (typically the main entry point or /auth/login)
-2. Enter your administrator username and password in the provided fields
-3. Click the "Login" or "Sign In" button
-4. Upon successful login, you will be redirected to the Dashboard or a similar main overview page
+To use the Patient Management System, authenticated users must log in:
+1. Navigate to the application's login page.
+2. Enter your username and password.
+3. Click the "Login" or "Sign In" button.
+4. Upon successful login, you will be redirected to the Dashboard or a similar main overview page, with access tailored to your assigned role.
 
 2. Dashboard Overview
 ---------------------
-The Dashboard provides a summary of key information. From here, you can navigate to different sections of the application using the main menu or navigation links.
+The Dashboard provides a summary of key information relevant to the logged-in user's role. From here, you can navigate to different sections of the application using the main menu or navigation links.
 
-3. Patient Management
----------------------
-This section allows you to manage all patient-related data. Only administrators have access to these functionalities.
+3. Patient Management (Admin and Surgical Team Access)
+----------------------------------------------------
+This section allows authorized users (Admin and Surgical Team) to manage and view patient-related data.
 
-Adding a New Patient:
-1. From the main navigation, go to the "Patients" or "Add Patient" section
-2. Click on the "Add New Patient" or similar button
-3. Fill in the required patient details in the form (e.g., Name, Date of Birth, Contact Information, etc.)
-4. Click "Save" or "Create Patient" to add the new record to the system
+Adding a New Patient (Admin Only):
+1. From the main navigation, go to the "Add Patient" section.
+2. Fill in the required patient details in the form (e.g., Name, Date of Birth, Contact Information, Procedure, Surgeon, Scheduled Date/Time).
+3. Click "Save" or "Create Patient" to add the new record to the system.
 
-Viewing Patient Details:
-1. Navigate to the "Patients" list
-2. You will see a list of all registered patients
-3. To view detailed information for a specific patient, click on their name or a "View Details" button next to their entry in the list
+Viewing Patient Details (Admin and Surgical Team):
+1. Navigate to the "Patients" list.
+2. You will see a list of all registered patients.
+3. To view detailed information for a specific patient, click on their name or a "View Details" button next to their entry in the list.
 
-Updating Patient Information:
-1. From the patient details view (or directly from the patient list, if an "Edit" option is available), click the "Edit" or "Update" button
-2. Modify the necessary fields in the patient's record
-3. Click "Save Changes" or "Update Patient" to apply your modifications
+Updating Patient Information (Admin Only):
+1. From the patient details view, click the "Edit" or "Update" button.
+2. Modify the necessary fields in the patient's record.
+3. Click "Save Changes" or "Update Patient" to apply your modifications.
 
-Searching for Patients:
-1. On the "Patients" list page, locate the search bar
+Searching for Patients (Admin and Surgical Team):
+1. On the "Patients" list page, locate the search bar.
 2. You can search for patients by various criteria such as:
    - Patient Name
    - Current Status (e.g., Admitted, Discharged, Scheduled)
    - Scheduled Date (for appointments or procedures)
    - Surgeon (if applicable)
-3. Enter your search query and press Enter or click the "Search" button. The list will filter to show matching results
+3. Enter your search query and press Enter or click the "Search" button. The list will filter to show matching results.
 
-Viewing Patient Statistics:
-1. Look for a "Statistics" or "Reports" section, possibly within the "Patients" area or on the Dashboard
-2. Clicking on this will display various aggregated statistics related to patients in the system
+Viewing Patient Statistics (Admin Only):
+1. Look for a "Statistics" or "Reports" section, possibly within the "Patients" area or on the Dashboard.
+2. Clicking on this will display various aggregated statistics related to patients in the system.
 
-4. Other Potential Features (Depending on Implementation)
---------------------------------------------------------
-- Chat Inference: If integrated, there might be a chat interface for AI-driven interactions or insights related to patient data
-- Status and Status Logs: The system may track and display various statuses for patients or internal processes, with logs available for review
-- Projects/Tasks: There might be sections for managing internal projects or tasks related to patient care or administrative duties
+4. Status Board (Publicly Accessible with Role-Based Detail)
+----------------------------------------------------------
+The Status Board provides real-time updates on patient surgical progress. It is designed to be publicly accessible, but the level of detail displayed varies based on the user's authentication status and role.
+
+Information visible to all users (publicly accessible):
+- Patient Number (a unique identifier, not the patient's name)
+- Current Status (e.g., Scheduled, Checked In, In-Progress, Recovery, Complete, Dismissal)
+- Surgeon's Name
+- Scheduled Time of the procedure
+- Room Number
+
+Additional information visible only to Admin and Surgical Team roles:
+- Patient's Full Name (First Name and Last Name)
+- The specific medical Procedure being performed
+
+The Status Board automatically refreshes every 30 seconds to provide up-to-date information.
+
+5. Chatbot (AI-Powered Assistant)
+---------------------------------
+The system includes an AI-powered chatbot to assist with data interaction and provide information. Users can interact with the chatbot using natural language queries to:
+- Quickly fetch patient records by name, ID, or other identifiers.
+- Get concise summaries of patient information.
+- Potentially perform actions like scheduling appointments or updating patient statuses through simple commands (depending on specific implementation).
+- Receive guided assistance for various processes.
+
+6. Status and Status Logs
+-------------------------
+The system tracks and displays various statuses for patients throughout their journey. Detailed logs of status changes are available for review, providing an audit trail of patient progress.
